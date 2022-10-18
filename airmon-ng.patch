@@ -1,0 +1,57 @@
+--- /usr/local/sbin/airmon-ng-orig	2022-10-18 04:20:47.123675907 +0300
++++ /usr/local/sbin/airmon-ng	2022-10-18 04:14:30.195332315 +0300
+@@ -1290,6 +1290,16 @@
+ 	fi
+ }
+ 
++getMode() {
++	DEVMODE="null"
++	
++	if [ -z "${1}" ]; then
++		return
++	fi
++	
++	DEVMODE="$(iwconfig ${1} | awk '/Mode:/{print $1}' | awk -F: '{print $2}')"
++}
++
+ checkvm() {
+ 	#this entire section of code is completely stolen from Carlos Perez's work in checkvm.rb for metasploit and rewritten (poorly) in sh
+ 	#check loaded modules
+@@ -1514,11 +1524,11 @@
+ if [ "${VERBOSE}" = "1" ]; then
+ 	printf "\nX[PHY]Interface\t\tDriver[Stack]-FirmwareRev\t\tChipset\t\t\t\t\t\t\t\t\t\tExtended Info\n\n"
+ else
+-	printf "PHY\tInterface\tDriver\t\tChipset\n\n"
++	printf "PHY\tInterface\tDriver\t\tMode\t\tChipset\n\n"
+ fi
+ 
+ for iface in $(printf "%s" "${iface_list}"); do
+-	unset ethtool_output DRIVER FROM FIRMWARE STACK MADWIFI MAC80211 BUS BUSADDR BUSINFO DEVICEID CHIPSET EXTENDED NET_TYPE PHYDEV ifacet DRIVERt FIELD1 FIELD1t FIELD2 FIELD2t CHIPSETt
++	unset ethtool_output DRIVER FROM FIRMWARE STACK MADWIFI MAC80211 BUS BUSADDR BUSINFO DEVICEID CHIPSET EXTENDED NET_TYPE PHYDEV ifacet DRIVERt FIELD1 FIELD1t FIELD2 FIELD2t CHIPSETt DEVMODE
+ 	#add a RUNNING check here and up the device if it isn't already
+ 	ethtool_output="$(ethtool -i "${iface}" 2>&1)"
+ 	if [ "$ethtool_output" != "Cannot get driver information: Operation not supported" ]; then
+@@ -1526,6 +1536,7 @@
+ 		getBus "${iface}"
+ 		getPhy "${iface}"
+ 		getDriver "${iface}"
++		getMode "${iface}"
+ 		getChipset "${iface}"
+ 		if [ "${VERBOSE}" = "1" ]; then
+ 			getFrom "${iface}"
+@@ -1590,7 +1601,7 @@
+ 		else
+ 			ifacet="\t\t"
+ 		fi
+-		printf "${PHYDEV}\t${iface}${ifacet}${DRIVER}${DRIVERt}${CHIPSET}\n"
++		printf "${PHYDEV}\t${iface}${ifacet}${DRIVER}${DRIVERt}${DEVMODE}\t\t${CHIPSET}\n"
+ 	fi
+ 
+ 	if [ "${DRIVER}" = "wl" ]; then
+@@ -1612,4 +1623,4 @@
+ done
+ 
+ #end with some space
+-printf "\n"
+\ No newline at end of file
++printf "\n"
