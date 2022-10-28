@@ -23,7 +23,7 @@ if [ -r $filename ]; then
 		PSK="$(echo ${line} | awk -F: '{print $2}')"
 
 		if [ ! -z ESSID ] && [ ! -z PSK ]; then
-			wpa_passphrase $ESSID > $ESSID.conf $PSK
+			wpa_passphrase $ESSID > $ESSID$after $PSK
 			if [ -f "${ESSID}${after}" ]; then
 				echo -e "\e[1;33mCreated PSK-conf file '\e[0;32m${ESSID}${after}\e[1;33m'"
 			else
