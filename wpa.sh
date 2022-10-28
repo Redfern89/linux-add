@@ -1,11 +1,17 @@
 #!/bin/bash
 filename=${1}
 n=1
+after=".conf"
 
 if [ -z $filename ]; then
-	echo 'uasge ./wpa.sh [filename]'
+	echo 'uasge ./wpa.sh <filename>'
 	exit
 fi
+
+if [ ! -f "/usr/bin/wpa_passphrase" ]; then
+	echo -e "\e[0;31mwpa_passphrase requried"
+	exit
+fi 
 
 if [ -r $filename ]; then
 
@@ -18,10 +24,10 @@ if [ -r $filename ]; then
 
 		if [ ! -z ESSID ] && [ ! -z PSK ]; then
 			wpa_passphrase $ESSID > $ESSID.conf $PSK
-			if [ -f "${ESSID}.conf" ]; then
-				echo -e "\e[1;33mCreated PSK-conf file '${ESSID}.conf'"
+			if [ -f "${ESSID}${after}" ]; then
+				echo -e "\e[1;33mCreated PSK-conf file '\e[0;32m${ESSID}${after}\e[1;33m'"
 			else
-				echo -e "\e[0;31mError wpa_passphrase in '${ESSID}.conf'"
+				echo -e "\e[0;31mError wpa_passphrase in '${ESSID}${after}'"
 			fi
 		fi
 
@@ -29,7 +35,7 @@ if [ -r $filename ]; then
 	done < $filename
 	
 	echo
-	echo -e "\e[1;35mDone"
+	echo -e "\e[1;35mwpa.sh Done, Thank you"
 
 else
 	echo -e "\e[0;31m${filename} not found"
