@@ -1,1 +1,1 @@
-${BCyan}┌──${IWhite}(${BGreen}\u${BRed}😈${BYellow}\h${BWhite})-${IBlue}($(uname -r))${BWhite}-${BPurple}[ ${BGreen}📂${BPurple}\$PWD ]\n${BCyan}└─> ${IWhite}
+${BCyan}┌──${IWhite}(${BGreen}\u${BRed}😈${BYellow}\h${BWhite})-${IBlue}(echo $(uname -r))${BWhite}-${BPurple}[ ${BGreen}📂${BPurple}\$PWD ]\n${BCyan}└─> ${IWhite}
