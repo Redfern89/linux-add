@@ -1,1 +1,2 @@
-${BCyan}┌──${IWhite}(${BGreen}\u${BRed}😈${BYellow}\h${BWhite})-${IBlue}($(uname -r))${BWhite}-${BPurple}[ ${BGreen}📂${BPurple}\$PWD ]\n${BCyan}└─> ${IWhite}
+export PS1="
+${BCyan}┌──${IWhite}(${BGreen}\u${BRed}😈${BYellow}\h${BWhite})-${IBlue}($(uname -r))${BWhite}-${BPurple}[ ${BGreen}📂${BPurple}\$PWD ]\n${BCyan}└─> ${IWhite}"
